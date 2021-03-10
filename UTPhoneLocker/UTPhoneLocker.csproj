@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PhoneLocker\PhoneLocker.csproj" />
+    <ProjectReference Include="..\PhoneLockerClassLibrabry\PhoneLockerClassLibrary.csproj" />
+    <ProjectReference Include="..\PhoneLockerProgram\PhoneLockerProgram.csproj" />
   </ItemGroup>
 
 </Project>
