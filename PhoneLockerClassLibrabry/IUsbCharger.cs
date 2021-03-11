@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UsbSimulator
+namespace PhoneLockerClassLibrary
 {
     public class CurrentEventArgs : EventArgs
     {
