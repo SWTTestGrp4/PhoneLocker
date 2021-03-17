@@ -6,5 +6,7 @@ namespace PhoneLocker
 {
     public interface IPhoneLockerControl
     {
+        public void StartCharge();
+        public void StopCharge();
     }
 }

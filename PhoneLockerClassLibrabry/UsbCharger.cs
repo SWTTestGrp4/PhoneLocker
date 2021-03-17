@@ -3,7 +3,7 @@ using System.Timers;
 
 namespace PhoneLockerClassLibrary
 {
-    public class UsbChargerSimulator : IUsbCharger
+    public class UsbCharger : IUsbCharger
     {
         // Constants
         private const double MaxCurrent = 500.0; // mA
@@ -12,10 +12,9 @@ namespace PhoneLockerClassLibrary
         private const int ChargeTimeMinutes = 20; // minutes
         private const int CurrentTickInterval = 250; // ms
 
-        public event EventHandler<CurrentEventArgs> CurrentValueEvent;
+        public event EventHandler<CurrentChangedEventArgs> CurrentEventArgs;
 
         public double CurrentValue { get; private set; }
-
         public bool Connected { get; private set; }
 
         private bool _overload;
@@ -23,7 +22,7 @@ namespace PhoneLockerClassLibrary
         private System.Timers.Timer _timer;
         private int _ticksSinceStart;
 
-        public UsbChargerSimulator()
+        public UsbCharger()
         {
             CurrentValue = 0.0;
             Connected = true;
@@ -107,9 +106,14 @@ namespace PhoneLockerClassLibrary
             _charging = false;
         }
 
+        void IUsbCharger.OnCurrentChangedEvent(CurrentChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnNewCurrent()
         {
-            CurrentValueEvent?.Invoke(this, new CurrentEventArgs() {Current = this.CurrentValue});
+            CurrentEventArgs?.Invoke(this, new CurrentChangedEventArgs() {CurrentCurrent = this.CurrentValue});
         }
     }
 }

@@ -12,11 +12,11 @@ namespace UsbSimulator.Test
     [TestFixture]
     public class TestUsbChargerSimulator
     {
-        private UsbChargerSimulator _uut;
+        private UsbCharger _uut;
         [SetUp]
         public void Setup()
         {
-            _uut = new UsbChargerSimulator();
+            _uut = new UsbCharger();
         }
 
         [Test]
