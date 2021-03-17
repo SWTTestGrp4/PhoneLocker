@@ -6,5 +6,6 @@ namespace PhoneLocker
 {
     public interface IDisplay
     {
+        public void DisplayText(string message);
     }
 }
