@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PhoneLocker;
+using UsbSimulator;
 
-namespace PhoneLockerClassLibrary
+namespace PhoneLocker
 {
     public class StationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        private enum PhoneLockerState
+        private enum LadeskabState
         {
             Available,
             Locked,
@@ -14,26 +20,21 @@ namespace PhoneLockerClassLibrary
         };
 
         // Her mangler flere member variable
-        private PhoneLockerState _state;
-        private IUsbCharger _charger;
-        private IDoor _door;
+        private LadeskabState _state;
+        private IChargeControl _charger;
         private int _oldId;
+        private IDoor _door;
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         // Her mangler constructor
-        public StationControl(IUsbCharger charger, IDoor door)
-        {
-            door = _door;
-            charger = _charger;
-        }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
         private void RfidDetected(int id)
         {
             switch (_state)
             {
-                case PhoneLockerState.Available:
+                case LadeskabState.Available:
                     // Check for ladeforbindelse
                     if (_charger.Connected)
                     {
@@ -46,7 +47,7 @@ namespace PhoneLockerClassLibrary
                         }
 
                         Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
-                        _state = PhoneLockerState.Locked;
+                        _state = LadeskabState.Locked;
                     }
                     else
                     {
@@ -55,11 +56,11 @@ namespace PhoneLockerClassLibrary
 
                     break;
 
-                case PhoneLockerState.DoorOpen:
+                case LadeskabState.DoorOpen:
                     // Ignore
                     break;
 
-                case PhoneLockerState.Locked:
+                case LadeskabState.Locked:
                     // Check for correct ID
                     if (id == _oldId)
                     {
@@ -71,7 +72,7 @@ namespace PhoneLockerClassLibrary
                         }
 
                         Console.WriteLine("Tag din telefon ud af skabet og luk døren");
-                        _state = PhoneLockerState.Available;
+                        _state = LadeskabState.Available;
                     }
                     else
                     {
