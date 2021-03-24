@@ -36,11 +36,10 @@ namespace PhoneLockerClassLibrary
         public void HandleCurrentChangedEvent(object sender, CurrentChangedEventArgs e)
         {
             CurrentCurrent = e.CurrentCurrent;
-            //do something with the current current??
-            if (!_stationControl.DoorOpened())
-            {
-                if (isConnected())
-                {
+            //if (!_stationControl.DoorOpened())
+            //{
+                //if (isConnected())
+                //{
                     if (CurrentCurrent == 0)
                     {
                         //Der er ingen forbindelse til en telefon, eller ladning er ikke startet. Displayet viser ikke noget om ladning
@@ -60,8 +59,8 @@ namespace PhoneLockerClassLibrary
                         StopCharge();
                         Console.WriteLine("Der er noget galt! Afbryder straks opladning");
                     }
-                }
-            }
+                //}
+            //}
         }
     }
 }
