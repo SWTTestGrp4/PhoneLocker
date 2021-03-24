@@ -1,12 +1,30 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using PhoneLocker;
+using PhoneLockerClassLibrary;
+
 
 namespace PhoneLockerProgram
 {
     class Program
     {
+
+
+
         static void Main(string[] args)
         {
-            // Assemble your system here from all the classes
+            #region Instantiering af dependencies
+            IUsbCharger usbCharger = new UsbCharger();
+            IDisplay display = new Display();
+            IDoor door = new Door();
+            ILogging logging = new LogFileDAL();
+            IRFIDReader rfidReader = new RFIDReader();
+            PhoneLockerState state = PhoneLockerState.Available;
+            IChargeControl chargeControl = new ChargeControl(usbCharger);
+            
+            IStationControl stationControl = new StationControl(state, door, rfidReader, chargeControl, logging, display);
+            #endregion
+
 
             bool finish = false;
             do
@@ -16,6 +34,7 @@ namespace PhoneLockerProgram
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
+
                 switch (input[0])
                 {
                     case 'E':
@@ -23,19 +42,21 @@ namespace PhoneLockerProgram
                         break;
 
                     case 'O':
-                        door.OnDoorOpen();
+                        display.DisplayText("Døren er åben");
                         break;
 
                     case 'C':
-                        door.OnDoorClose();
+                        display.DisplayText("Døren er lukket");
                         break;
 
                     case 'R':
-                        System.Console.WriteLine("Indtast RFID id: ");
+                        display.DisplayText("Indtast RFID id: ");
                         string idString = System.Console.ReadLine();
 
                         int id = Convert.ToInt32(idString);
-                        rfidReader.OnRfidRead(id);
+                        rfidReader.ReadRFID(id);
+
+                        stationControl.RfidDetected();
                         break;
 
                     default:

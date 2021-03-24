@@ -4,6 +4,6 @@ namespace PhoneLockerClassLibrary
 {
     public class RFIDDetectedEventArgs : EventArgs
     {
-        public bool RFIDDetected { get; set; }
+        public int RFID { get; set; }
     }
 }

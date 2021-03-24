@@ -55,7 +55,7 @@ namespace PhoneLockerClassLibrary
                     CurrentValue = 0.0;
                 }
 
-                OnCurrentChangedEvent();
+                OnCurrentChangedEvent(new CurrentChangedEventArgs() { CurrentCurrent = this.CurrentValue });
             }
         }
 
@@ -77,6 +77,8 @@ namespace PhoneLockerClassLibrary
                 if (Connected && !_overload)
                 {
                     CurrentValue = 500;
+                    //_charging = true;
+                    //TODO
                 }
                 else if (Connected && _overload)
                 {
@@ -87,7 +89,7 @@ namespace PhoneLockerClassLibrary
                     CurrentValue = 0.0;
                 }
 
-                OnCurrentChangedEvent();
+                OnCurrentChangedEvent(new CurrentChangedEventArgs() { CurrentCurrent = this.CurrentValue });
                 _ticksSinceStart = 0;
 
                 _charging = true;
@@ -101,15 +103,15 @@ namespace PhoneLockerClassLibrary
             _timer.Stop();
 
             CurrentValue = 0.0;
-            OnCurrentChangedEvent();
+            OnCurrentChangedEvent(new CurrentChangedEventArgs() { CurrentCurrent = this.CurrentValue });
 
             _charging = false;
         }
 
 
-        public void OnCurrentChangedEvent()
+        public void OnCurrentChangedEvent(CurrentChangedEventArgs e)
         {
-            CurrentEventArgs?.Invoke(this, new CurrentChangedEventArgs() {CurrentCurrent = this.CurrentValue});
+            CurrentEventArgs?.Invoke(this, e);
         }
     }
 }

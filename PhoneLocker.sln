@@ -5,9 +5,12 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UTPhoneLocker", "UTPhoneLocker\UTPhoneLocker.csproj", "{DC21D40B-65A2-455B-A33F-1A8BE43B1FCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneLockerProgram", "PhoneLockerProgram\PhoneLockerProgram.csproj", "{DDF29A28-4143-49CF-8F8A-27E7FFD83F8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneLockerProgram", "PhoneLockerProgram\PhoneLockerProgram.csproj", "{DDF29A28-4143-49CF-8F8A-27E7FFD83F8F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{797A3A03-337B-4B5E-B3E6-099D4EBD7ABC} = {797A3A03-337B-4B5E-B3E6-099D4EBD7ABC}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneLockerClassLibrary", "PhoneLockerClassLibrabry\PhoneLockerClassLibrary.csproj", "{797A3A03-337B-4B5E-B3E6-099D4EBD7ABC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneLockerClassLibrary", "PhoneLockerClassLibrabry\PhoneLockerClassLibrary.csproj", "{797A3A03-337B-4B5E-B3E6-099D4EBD7ABC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
