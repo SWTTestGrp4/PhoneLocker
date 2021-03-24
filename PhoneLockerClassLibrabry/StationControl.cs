@@ -18,7 +18,7 @@ namespace PhoneLocker
             Locked,
             DoorOpen
         };
-
+          
         #region instantiering af objekter
         private PhoneLockerState _state;
         private IChargeControl _charger;
