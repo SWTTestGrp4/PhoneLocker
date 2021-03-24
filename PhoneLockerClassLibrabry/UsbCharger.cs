@@ -55,7 +55,7 @@ namespace PhoneLockerClassLibrary
                     CurrentValue = 0.0;
                 }
 
-                OnNewCurrent();
+                OnCurrentChangedEvent();
             }
         }
 
@@ -87,7 +87,7 @@ namespace PhoneLockerClassLibrary
                     CurrentValue = 0.0;
                 }
 
-                OnNewCurrent();
+                OnCurrentChangedEvent();
                 _ticksSinceStart = 0;
 
                 _charging = true;
@@ -101,17 +101,13 @@ namespace PhoneLockerClassLibrary
             _timer.Stop();
 
             CurrentValue = 0.0;
-            OnNewCurrent();
+            OnCurrentChangedEvent();
 
             _charging = false;
         }
 
-        void IUsbCharger.OnCurrentChangedEvent(CurrentChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
-        private void OnNewCurrent()
+        public void OnCurrentChangedEvent()
         {
             CurrentEventArgs?.Invoke(this, new CurrentChangedEventArgs() {CurrentCurrent = this.CurrentValue});
         }

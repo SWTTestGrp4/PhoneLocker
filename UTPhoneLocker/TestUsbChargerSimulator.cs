@@ -42,7 +42,7 @@ namespace UsbSimulator.Test
         public void Started_WaitSomeTime_ReceivedSeveralValues()
         {
             int numValues = 0;
-            _uut.CurrentValueEvent += (o, args) => numValues++;
+            _uut.CurrentEventArgs += (o, args) => numValues++;
 
             _uut.StartCharge();
 
@@ -55,7 +55,7 @@ namespace UsbSimulator.Test
         public void Started_WaitSomeTime_ReceivedChangedValue()
         {
             double lastValue = 1000;
-            _uut.CurrentValueEvent += (o, args) => lastValue = args.Current;
+            _uut.CurrentEventArgs += (o, args) => lastValue = args.CurrentCurrent;
 
             _uut.StartCharge();
 
@@ -78,7 +78,7 @@ namespace UsbSimulator.Test
         public void Started_WaitSomeTime_PropertyMatchesReceivedValue()
         {
             double lastValue = 1000;
-            _uut.CurrentValueEvent += (o, args) => lastValue = args.Current;
+            _uut.CurrentEventArgs += (o, args) => lastValue = args.CurrentCurrent;
 
             _uut.StartCharge();
 
@@ -94,9 +94,9 @@ namespace UsbSimulator.Test
             ManualResetEvent pause = new ManualResetEvent(false);
             double lastValue = 0;
 
-            _uut.CurrentValueEvent += (o, args) =>
+            _uut.CurrentEventArgs += (o, args) =>
             {
-                lastValue = args.Current;
+                lastValue = args.CurrentCurrent;
                 pause.Set();
             };
 
@@ -121,9 +121,9 @@ namespace UsbSimulator.Test
             ManualResetEvent pause = new ManualResetEvent(false);
             double lastValue = 1000;
 
-            _uut.CurrentValueEvent += (o, args) =>
+            _uut.CurrentEventArgs += (o, args) =>
             {
-                lastValue = args.Current;
+                lastValue = args.CurrentCurrent;
                 pause.Set();
             };
 
@@ -148,9 +148,9 @@ namespace UsbSimulator.Test
         {
             double lastValue = 0;
 
-            _uut.CurrentValueEvent += (o, args) =>
+            _uut.CurrentEventArgs += (o, args) =>
             {
-                lastValue = args.Current;
+                lastValue = args.CurrentCurrent;
             };
 
             // First value should be high
@@ -169,9 +169,9 @@ namespace UsbSimulator.Test
         {
             double lastValue = 1000;
 
-            _uut.CurrentValueEvent += (o, args) =>
+            _uut.CurrentEventArgs += (o, args) =>
             {
-                lastValue = args.Current;
+                lastValue = args.CurrentCurrent;
             };
 
             // First value should be high
@@ -189,7 +189,7 @@ namespace UsbSimulator.Test
         public void StopCharge_IsCharging_ReceivesZeroValue()
         {
             double lastValue = 1000;
-            _uut.CurrentValueEvent += (o, args) => lastValue = args.Current;
+            _uut.CurrentEventArgs += (o, args) => lastValue = args.CurrentCurrent;
 
             _uut.StartCharge();
 
@@ -216,7 +216,7 @@ namespace UsbSimulator.Test
         public void StopCharge_IsCharging_ReceivesNoMoreValues()
         {
             double lastValue = 1000;
-            _uut.CurrentValueEvent += (o, args) => lastValue = args.Current;
+            _uut.CurrentEventArgs += (o, args) => lastValue = args.CurrentCurrent;
 
             _uut.StartCharge();
 
