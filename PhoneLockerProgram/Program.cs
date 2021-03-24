@@ -47,6 +47,7 @@ namespace PhoneLockerProgram
 
                     case 'C':
                         display.DisplayText("Døren er lukket");
+                        display.DisplayText("Scan venligst RFID");
                         break;
 
                     case 'R':
@@ -57,6 +58,7 @@ namespace PhoneLockerProgram
                         rfidReader.ReadRFID(id);
 
                         stationControl.RfidDetected();
+
                         break;
 
                     default:

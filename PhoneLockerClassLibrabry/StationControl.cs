@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using PhoneLocker;
@@ -72,10 +73,8 @@ namespace PhoneLocker
                         _door.LockDoor();
                         _charger.StartCharge();
                         _oldId = id;
-                        _logging.Write((DateTime.Now + ": Skab låst med RFID: {0}", id).ToString());
-                        
-
-                        _display.DisplayText("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
+                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: "+ id);
+                        _display.DisplayText("Skabet er nu optaget og opladning påbegyndes. Brug RFID til at låse skab op.");
                         _state = PhoneLockerState.Locked;
                     }
                     else
@@ -95,10 +94,10 @@ namespace PhoneLocker
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
-                        _logging.Write((DateTime.Now + ": Skab låst op med RFID: {0}", id).ToString());
-
+                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: "+ id);
 
                         _display.DisplayText("Tag din telefon ud af skabet og luk døren");
+                        _display.DisplayText("Skabet er nu ledigt");
                         _state = PhoneLockerState.Available;
                     }
                     else
