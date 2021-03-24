@@ -25,11 +25,12 @@ namespace PhoneLockerClassLibrary
             try
             {
                 formatter.Serialize(outputFileStream,message);
+                Console.WriteLine("Log has been saved to App Base Directory");
             }
             catch (Exception e)
             {
                 Console.WriteLine("Woops serializing failed. Try again");
-                throw;
+                throw e;
             }
         }
     }
