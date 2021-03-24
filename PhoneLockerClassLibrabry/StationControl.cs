@@ -1,10 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PhoneLocker;
 using PhoneLockerClassLibrary;
 
 namespace PhoneLocker
 {
-    public class StationControl
+    public class StationControl //:IStationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum LadeskabState
