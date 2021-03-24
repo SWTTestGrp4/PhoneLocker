@@ -7,13 +7,22 @@ namespace PhoneLocker
 {
     public interface IStationControl
     {
-        public enum PhoneLockerState { }
-        public event EventHandler<DoorLockedEventArgs> DoorLockedEvent;
-        public event EventHandler<RFIDDetectedEventArgs> RfidDetectedEvent;
-        public bool DoorLocked { get; set; }
+        public Enum PhoneLockerState();
+        public event EventHandler<DoorOpenedEventArgs> DoorOpenedEvent;
+        //public event EventHandler<RFIDDetectedEventArgs> RfidDetectedEvent;
+        public IDoor Door { get; set; }
         public IRFIDReader RfidReader { get; set; }
 
-       
+        public bool DoorOpened();
+        public bool RFIDDetected(int ID);
+        public bool CheckId(int OldId, int Id);
+        //HandleDoorOpenedEvent
+
+        //Skal denne metode impl. her jævnfør Marc/Mads, eller i IDoor, jævnfør vores diagram?
+        //protected virtual void OnDoorOpened(DoorOpenedEventArgs e)
+        //{
+        //    //DoorOpenedEvent
+        //}
 
 
     }

@@ -24,8 +24,6 @@ namespace PhoneLocker
         private IChargeControl _charger;
         private int _oldId;
         private IDoor _door;
-        private ILogging _logging;
-        private IDisplay _display;
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
@@ -64,7 +62,6 @@ namespace PhoneLocker
 
         private void RfidDetected(int id)
         {
-
             switch (_state)
             {
                 case PhoneLockerState.Available:

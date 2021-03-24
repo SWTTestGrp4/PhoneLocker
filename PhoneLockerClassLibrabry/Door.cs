@@ -1,26 +1,17 @@
 ﻿using System;
-using PhoneLocker;
 
 namespace PhoneLockerClassLibrary
 {
     public class Door: IDoor
     {
-        public event EventHandler<DoorLockedEventArgs> DoorLockedEvent;
-
         public void LockDoor()
         {
-            OnDoorOpened(new DoorLockedEventArgs{DoorLocked = true});
+            throw new NotImplementedException();
         }
 
         public void UnlockDoor()
         {
-            OnDoorOpened(new DoorLockedEventArgs { DoorLocked = false});
+            throw new NotImplementedException();
         }
-        protected virtual void OnDoorOpened(DoorLockedEventArgs e)
-        {
-            DoorLockedEvent?.Invoke(this, e);
-        }
-
-
     }
 }
