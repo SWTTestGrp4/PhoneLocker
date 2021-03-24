@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PhoneLocker;
-using PhoneLockerClassLibrary;
+using UsbSimulator;
 
 namespace PhoneLocker
 {
-    public class StationControl //:IStationControl
+    public class StationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         private enum LadeskabState
