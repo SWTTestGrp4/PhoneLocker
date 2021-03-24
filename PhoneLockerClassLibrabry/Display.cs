@@ -11,5 +11,10 @@ namespace PhoneLockerClassLibrary
         {
             Console.WriteLine(message);
         }
+
+        public void DisplayCharge(string message)
+        {
+            Console.WriteLine("\t\t\t"+message);
+        }
     }
 }

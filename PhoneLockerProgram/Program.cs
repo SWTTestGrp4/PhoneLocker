@@ -30,7 +30,7 @@ namespace PhoneLockerProgram
             do
             {
                 string input;
-                System.Console.WriteLine("Indtast E, O, C, R: ");
+                System.Console.WriteLine("Indtast E (exit), O (open), C (close), R (rfid), P (phone): ");
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
@@ -38,29 +38,45 @@ namespace PhoneLockerProgram
                 switch (input[0])
                 {
                     case 'E':
+                    case 'e':
                         finish = true;
                         break;
 
                     case 'O':
+                    case 'o':
                         display.DisplayText("Døren er åben");
                         break;
 
                     case 'C':
+                    case 'c':
                         display.DisplayText("Døren er lukket");
                         display.DisplayText("Scan venligst RFID");
                         break;
 
                     case 'R':
+                    case 'r':
                         display.DisplayText("Indtast RFID id: ");
                         string idString = System.Console.ReadLine();
 
                         int id = Convert.ToInt32(idString);
                         rfidReader.ReadRFID(id);
-
                         stationControl.RfidDetected();
 
                         break;
-
+                    case 'P':
+                    case 'p':
+                        if (chargeControl.Connected)
+                        {
+                            chargeControl.Connected = false;
+                            display.DisplayText("Telefon frakoblet");
+                            //chargeControl.StopCharge();
+                        }
+                        else
+                        {
+                            chargeControl.Connected = true;
+                            display.DisplayText("Telefon tilsluttet");
+                        }
+                        break;
                     default:
                         break;
                 }

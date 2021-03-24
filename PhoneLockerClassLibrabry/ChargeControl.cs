@@ -9,18 +9,16 @@ namespace PhoneLockerClassLibrary
     {
         public bool Connected { get; set; }
         private IUsbCharger _charger;
+        private IDisplay _display;
         public double CurrentCurrent { get; set; }
 
         public ChargeControl(IUsbCharger charger)
         {
             _charger = charger;
+            _display = new Display();
             _charger.CurrentEventArgs += HandleCurrentChangedEvent;
         }
-        public bool isConnected()
-        {
-            Connected = _charger.Connected;
-            return Connected;
-        }
+   
         public void StartCharge()
         {
             _charger.StartCharge();
@@ -42,17 +40,17 @@ namespace PhoneLockerClassLibrary
             else if (CurrentCurrent > 0 && CurrentCurrent <= 5)
             {
                 StopCharge();
-                Console.WriteLine("Telefonen er fuldt opladet");
+                _display.DisplayCharge("Telefonen er fuldt opladet");
             }
             else if (CurrentCurrent > 5 && CurrentCurrent <= 500)
             {
                 StartCharge();
-                Console.WriteLine("Opladning igang");
+                _display.DisplayCharge("Opladning igang");
             }
             else
             {
                 StopCharge();
-                Console.WriteLine("Der er noget galt! Afbryder straks opladning");
+                _display.DisplayCharge("Der er noget galt! Afbryder straks opladning");
             }
         }
     }

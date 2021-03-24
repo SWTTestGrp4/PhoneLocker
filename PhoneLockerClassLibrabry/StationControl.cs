@@ -68,13 +68,14 @@ namespace PhoneLocker
                     DoorLocked = false;
                     _display.DisplayText("Tilslut telefon");
 
-                    if (_charger.isConnected())
+                    if (_charger.Connected)
                     {
                         _door.LockDoor();
                         _charger.StartCharge();
                         _oldId = id;
                         _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: "+ id);
-                        _display.DisplayText("Skabet er nu optaget og opladning påbegyndes. Brug RFID til at låse skab op.");
+                        _display.DisplayText("Brug RFID til at låse skab op.");
+                        _display.DisplayCharge("Skabet er nu optaget og opladning påbegyndes.");
                         _state = PhoneLockerState.Locked;
                     }
                     else
