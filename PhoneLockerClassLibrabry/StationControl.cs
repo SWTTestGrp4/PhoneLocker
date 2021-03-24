@@ -25,7 +25,7 @@ namespace PhoneLocker
         private int _oldId;
         private IDoor _door;
         private ILogging _logging;
-        private Display _display;
+        private IDisplay _display;
 
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
