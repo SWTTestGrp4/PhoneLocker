@@ -10,5 +10,8 @@ namespace PhoneLockerClassLibrary
 
         public void UnlockDoor();
 
+        public void OnDoorOpened(DoorLockedEventArgs e);
+
+
     }
 }

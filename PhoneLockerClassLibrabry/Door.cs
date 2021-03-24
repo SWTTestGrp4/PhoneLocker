@@ -16,7 +16,7 @@ namespace PhoneLockerClassLibrary
         {
             OnDoorOpened(new DoorLockedEventArgs { DoorLocked = false });
         }
-        protected virtual void OnDoorOpened(DoorLockedEventArgs e)
+        public void OnDoorOpened(DoorLockedEventArgs e)
         {
             DoorLockedEvent?.Invoke(this, e);
         }

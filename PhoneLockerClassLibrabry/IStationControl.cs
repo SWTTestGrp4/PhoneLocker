@@ -7,11 +7,9 @@ namespace PhoneLocker
 {
     public interface IStationControl
     {
-        public enum PhoneLockerState { };
+      public bool DoorLocked { get; set; }
 
-        public bool DoorLocked { get; set; }
-
-        public IRFIDReader RfidReader { get; set; }
+      public void RfidDetected();
     }
 
 

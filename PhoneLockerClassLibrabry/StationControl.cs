@@ -11,13 +11,7 @@ namespace PhoneLocker
     public class StationControl: IStationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        public enum PhoneLockerState
-        {
-            Available,
-            Locked,
-            DoorOpen
-        };
-          
+        
         #region instantiering af objekter
         private PhoneLockerState _state;
         private IChargeControl _charger;
@@ -25,13 +19,13 @@ namespace PhoneLocker
         private IDoor _door;
         private ILogging _logging;
         private IDisplay _display;
+        private IRFIDReader _rfidReader;
 
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         public bool DoorLocked { get; set; }
-        public IRFIDReader RfidReader { get; set; }
-        public bool rfidDetected { get; set; }
+        public int Rfid { get; set; }
 
         #endregion
 
@@ -41,6 +35,8 @@ namespace PhoneLocker
             _charger = charger;
             _logging = logging;
             _display = display;
+            _door = door;
+            _rfidReader = rfidReader;
             door.DoorLockedEvent += HandleDoorLockedEvent;
             rfidReader.RFIDDetectedEvent += HandleRfidDetectedEvent;
         }
@@ -56,18 +52,21 @@ namespace PhoneLocker
 
         private void HandleRfidDetectedEvent(object sender,RFIDDetectedEventArgs e)
         {
-            rfidDetected = e.RFIDDetected;
+            Rfid = e.RFID;
         }
 
 
-        private void RfidDetected(int id)
+        public void RfidDetected()
         {
+            int id;
+            id = Rfid; 
             switch (_state)
             {
                 case PhoneLockerState.Available:
-                    // Check for ladeforbindelse
+                    
                     DoorLocked = false;
                     _display.DisplayText("Tilslut telefon");
+
                     if (_charger.isConnected())
                     {
                         _door.LockDoor();

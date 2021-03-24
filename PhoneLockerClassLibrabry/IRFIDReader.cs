@@ -8,11 +8,9 @@ namespace PhoneLocker
     public interface IRFIDReader
     {
         public event EventHandler<RFIDDetectedEventArgs> RFIDDetectedEvent;
-        public int OldID { get; set; }
-        public int ID { get; set; }
 
-        public int ReadRFID();
-        void OnRFIDDetected(RFIDDetectedEventArgs e);
+        public void ReadRFID(int id);
+        public void OnRFIDDetected(RFIDDetectedEventArgs e);
 
     }
 }

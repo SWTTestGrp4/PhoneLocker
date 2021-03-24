@@ -6,14 +6,12 @@ namespace PhoneLockerClassLibrary
     public class RFIDReader : IRFIDReader
     {
         public event EventHandler<RFIDDetectedEventArgs> RFIDDetectedEvent;
-        public int OldID { get; set; }
-        public int ID { get; set; }
-        public int ReadRFID()
+        public void ReadRFID(int id)
         {
-            return ID;
+            OnRFIDDetected(new RFIDDetectedEventArgs(){RFID = id});
         }
 
-        void IRFIDReader.OnRFIDDetected(RFIDDetectedEventArgs e)
+        public void OnRFIDDetected(RFIDDetectedEventArgs e)
         {
             RFIDDetectedEvent?.Invoke(this, e);
         }
