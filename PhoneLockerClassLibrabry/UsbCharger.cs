@@ -77,8 +77,7 @@ namespace PhoneLockerClassLibrary
                 if (Connected && !_overload)
                 {
                     CurrentValue = 500;
-                    //_charging = true;
-                    //TODO
+                    _charging = true;
                 }
                 else if (Connected && _overload)
                 {
