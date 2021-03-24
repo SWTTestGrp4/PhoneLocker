@@ -19,6 +19,6 @@ namespace PhoneLockerClassLibrary
         // Stop charging
         void StopCharge();
 
-        protected void OnCurrentChangedEvent(CurrentChangedEventArgs e);
+        void OnCurrentChangedEvent();
     }
 }
