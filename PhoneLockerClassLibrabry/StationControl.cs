@@ -8,7 +8,7 @@ using PhoneLockerClassLibrary;
 
 namespace PhoneLocker
 {
-    public class StationControl
+    public class StationControl: IStationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
         public enum PhoneLockerState
@@ -29,8 +29,6 @@ namespace PhoneLocker
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
-        public event EventHandler<DoorLockedEventArgs> DoorLockedEvent;
-        public event EventHandler<RFIDDetectedEventArgs> RfidDetectedEvent;
         public bool DoorLocked { get; set; }
         public IRFIDReader RfidReader { get; set; }
         public bool rfidDetected { get; set; }

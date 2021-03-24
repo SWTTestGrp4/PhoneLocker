@@ -16,6 +16,7 @@ namespace PhoneLockerProgram
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
+                /*
                 switch (input[0])
                 {
                     case 'E':
@@ -41,6 +42,7 @@ namespace PhoneLockerProgram
                     default:
                         break;
                 }
+                */
 
             } while (!finish);
         }

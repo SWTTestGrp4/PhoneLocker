@@ -7,10 +7,10 @@ namespace PhoneLocker
 {
     public interface IStationControl
     {
-        public enum PhoneLockerState { }
-        public event EventHandler<DoorLockedEventArgs> DoorLockedEvent;
-        public event EventHandler<RFIDDetectedEventArgs> RfidDetectedEvent;
+        public enum PhoneLockerState { };
+
         public bool DoorLocked { get; set; }
+
         public IRFIDReader RfidReader { get; set; }
     }
 

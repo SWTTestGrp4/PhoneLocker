@@ -37,7 +37,7 @@ namespace PhoneLockerClassLibrary
         {
             CurrentCurrent = e.CurrentCurrent;
             //do something with the current current??
-            if (!_stationControl.DoorOpened())
+            if (!_stationControl.DoorLocked)
             {
                 if (isConnected())
                 {
