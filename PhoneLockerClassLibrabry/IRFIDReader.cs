@@ -12,7 +12,7 @@ namespace PhoneLocker
         public int ID { get; set; }
 
         public int ReadRFID();
-        protected void OnRFIDDetected(RFIDDetectedEventArgs e);
+        void OnRFIDDetected(RFIDDetectedEventArgs e);
 
     }
 }

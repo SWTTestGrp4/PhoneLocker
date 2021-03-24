@@ -10,7 +10,7 @@ namespace PhoneLockerClassLibrary
         public int ID { get; set; }
         public int ReadRFID()
         {
-            
+            return ID;
         }
 
         void IRFIDReader.OnRFIDDetected(RFIDDetectedEventArgs e)
