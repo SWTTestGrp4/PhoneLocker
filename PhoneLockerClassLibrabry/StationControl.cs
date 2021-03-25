@@ -59,7 +59,6 @@ namespace PhoneLocker
             switch (_state)
             {
                 case PhoneLockerState.Available:
-
                     DoorLocked = false;
                     _display.DisplayText("Tilslut telefon");
 

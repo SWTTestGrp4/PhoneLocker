@@ -5,6 +5,7 @@ namespace PhoneLockerClassLibrary
 {
     public class Door: IDoor
     {
+        public bool DoorLocked { get; set; }
         public event EventHandler<DoorLockedEventArgs> DoorLockedEvent;
 
         public void LockDoor()
