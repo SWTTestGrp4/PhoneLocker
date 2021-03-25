@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using PhoneLocker;
 using PhoneLockerClassLibrary;
 using NSubstitute;
 namespace UsbSimulator.Test
@@ -106,6 +105,7 @@ namespace UsbSimulator.Test
     public class FakeStationControl: IStationControl
     {
         public bool DoorLocked { get; set; }
+        public int _oldId { get; set; }
         public int Rfid { get; set; }
         public DoorLockedEventArgs DoorEventArgs { get; set; }
 
