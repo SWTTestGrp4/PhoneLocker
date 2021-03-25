@@ -279,5 +279,36 @@ namespace UTPhoneLocker
             //ASSERT
             Assert.That(UUT._state, Is.EqualTo(desiredState));
         }
+        [TestCase(-10),
+         TestCase(0),
+         TestCase(1),
+         TestCase(200)]
+        public void HandleRfidDetectedEvent_AfterRfidDetected_IDMatchesOldID(int rfid)
+        {
+            //ARRANGE
+            PhoneLockerState teststate = PhoneLockerState.Locked;
+            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+
+            //ACT
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
+
+            //ASSERT
+            Assert.That(UUT.Rfid, Is.EqualTo(rfid));
+        }
+
+        [TestCase(true),
+         TestCase(false)]
+        public void HandleDoorLockedEvent_DoorOpenAndClosedInserted_DoorStatusInUUTIsSet(bool door)
+        {
+            //ARRANGE
+            PhoneLockerState teststate = PhoneLockerState.Available;
+            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+
+            //ACT
+            fakeDoor.DoorLockedEvent += Raise.EventWith(new DoorLockedEventArgs() { DoorLocked = door  });
+
+            //ASSERT
+            Assert.That(UUT.DoorLocked, Is.EqualTo(door));
+        }
     }
 }
