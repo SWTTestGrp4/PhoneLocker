@@ -1,27 +1,22 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace PhoneLockerClassLibrary
 {
     public class LogFileDAL : ILogging
     {
-        private string fileName;
-        private string destPath;
-        private FileStream outputFileStream;
-        private BinaryFormatter formatter;
-        public LogFileDAL()
-        {
-            fileName = "PhoneLockerLog.txt";
-            destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
-            outputFileStream = new FileStream(destPath, FileMode.OpenOrCreate, FileAccess.Write);
-            formatter = new BinaryFormatter();
-        }
-        public void Write(string message)
+       public void Write(string message)
         {
             try
             {
-                formatter.Serialize(outputFileStream,message);
+                using (var stream = new FileStream(
+                    "PhoneLockerLog.txt", FileMode.Create, FileAccess.Write, FileShare.Write, 4096))
+                {
+                    var bytes = Encoding.UTF8.GetBytes(message);
+                    stream.Write(bytes, 0, bytes.Length);
+                }
                 Console.WriteLine("Log has been saved to App Base Directory");
             }
             catch (Exception e)
