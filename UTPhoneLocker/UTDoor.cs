@@ -57,9 +57,23 @@ namespace UsbSimulator.Test
         public void UnlockDoor_DoorEventSetToNewValue_CorrectReceiveFromEvent()
         {
             _uut.UnlockDoor();
-            Assert.That(_receivedEventArgs.DoorLocked, Is.EqualTo(true));
+            Assert.That(_receivedEventArgs.DoorLocked, Is.EqualTo(false));
         }
 
+        [Test]
+        public void SetDoorLocked_DoorLockSetToNewParameter()
+        {
+            _uut.DoorLocked = true;
+            Assert.That(_uut.DoorLocked, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void GetDoorLocked_NewParameter_ParameterSetToDoorLocked()
+        {
+            _uut.DoorLocked = true;
+            bool newVal = _uut.DoorLocked;
+            Assert.That(_uut.DoorLocked, Is.EqualTo(newVal));
+        }
         /*
         [Test]
         public void OnDoorOpened_DoorHandlerTest_TestSuccess()
