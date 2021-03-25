@@ -11,22 +11,17 @@ namespace PhoneLocker
 {
     public class StationControl: IStationControl
     {
-        // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        
         #region instantiering af objekter
-        private PhoneLockerState _state;
-        private IChargeControl _charger;
         private int _oldId;
-        private IDoor _door;
-        private ILogging _logging;
-        private IDisplay _display;
-        private IRFIDReader _rfidReader;
-
-
-        private string logFile = "logfile.txt"; // Navnet på systemets log-fil
-
         public bool DoorLocked { get; set; }
         public int Rfid { get; set; }
+
+        public IDoor _door { get; set; }
+        public PhoneLockerState _state { get; set; }
+        public IChargeControl _charger { get; set; }
+        public ILogging _logging { get; set; }
+        public IDisplay _display { get; set; }
+        public IRFIDReader _rfidReader { get; set; }
 
         #endregion
 
@@ -60,11 +55,11 @@ namespace PhoneLocker
         public void RfidDetected()
         {
             int id;
-            id = Rfid; 
+            id = Rfid;
             switch (_state)
             {
                 case PhoneLockerState.Available:
-                    
+
                     DoorLocked = false;
                     _display.DisplayText("Tilslut telefon");
 
@@ -73,7 +68,7 @@ namespace PhoneLocker
                         _door.LockDoor();
                         _charger.StartCharge();
                         _oldId = id;
-                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: "+ id);
+                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: " + id);
                         _display.DisplayText("Brug RFID til at låse skab op.");
                         _display.DisplayCharge("Skabet er nu optaget og opladning påbegyndes.");
                         _state = PhoneLockerState.Locked;
@@ -95,7 +90,7 @@ namespace PhoneLocker
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
-                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: "+ id);
+                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: " + id);
 
                         _display.DisplayText("Tag din telefon ud af skabet og luk døren");
                         _display.DisplayText("Skabet er nu ledigt");
@@ -109,5 +104,7 @@ namespace PhoneLocker
                     break;
             }
         }
+
+
     }
 }
