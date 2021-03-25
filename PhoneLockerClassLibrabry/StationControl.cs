@@ -1,13 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using PhoneLocker;
-using PhoneLockerClassLibrary;
 
-namespace PhoneLocker
+namespace PhoneLockerClassLibrary
 {
     public class StationControl: IStationControl
     {
