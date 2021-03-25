@@ -70,7 +70,7 @@ namespace PhoneLockerClassLibrary
         }
 
         public void StartCharge()
-        {
+        { 
             // Ignore if already charging
             if (!_charging)
             {
