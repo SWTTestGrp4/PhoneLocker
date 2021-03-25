@@ -10,7 +10,7 @@ using PhoneLockerClassLibrary;
 namespace UsbSimulator.Test
 {
     [TestFixture]
-    public class TestUsbChargerSimulator
+    public class UTTestUsbChargerSimulator
     {
         private UsbCharger _uut;
         [SetUp]
