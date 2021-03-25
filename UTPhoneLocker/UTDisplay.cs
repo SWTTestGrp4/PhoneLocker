@@ -67,21 +67,37 @@ namespace UsbSimulator.Test
             //ASSERT
             UUT.Received(1).DisplayText(message);
         }
+        [TestCase("Forkert RFID tag",3)]
+        public void DisplayText_WhenPhoneLockerIsLockedAndChargerConnectedRfidDetectedButIsWrong_DisplayErrorMessage(string message, int rfid)
+        {
+            //ARRANGE
+            PhoneLockerState teststate = PhoneLockerState.Locked;
+            fakeChargeControl.Connected = true;
+            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
+            fakeStationControl.Rfid = rfid; //id fra event ved rfid scanning
+            fakeStationControl._oldId = 99; //gammelt id fra da man låste skabet
 
-        //[TestCase("Brug RFID til at låse skab op.")]
-        //public void DisplayCharge_WhenPhoneLockerIsAvailableAndChargerConnectedRfidDetected_DisplayChargeWritesUnlockMessage(string message)
-        //{
-        //    //ARRANGE
-        //    PhoneLockerState teststate = PhoneLockerState.Available;
-        //    fakeChargeControl.Connected = true;
-        //    fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
+            //ACT
+            fakeStationControl.RfidDetected();
 
-        //    //ACT
-        //    fakeStationControl.RfidDetected();
+            //ASSERT
+            UUT.Received(1).DisplayText(message);
+        }
 
-        //    //ASSERT
-        //    UUT.Received(1).DisplayText(message);
-        //}
+        [TestCase("Skabet er nu optaget og opladning påbegyndes.")]
+        public void DisplayCharge_WhenPhoneLockerIsAvailableAndChargerConnectedRfidDetected_DisplayChargeStartedAndLockerOccupied(string message)
+        {
+            //ARRANGE
+            PhoneLockerState teststate = PhoneLockerState.Available;
+            fakeChargeControl.Connected = true;
+            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
+
+            //ACT
+            fakeStationControl.RfidDetected();
+
+            //ASSERT
+            UUT.Received(1).DisplayCharge(message);
+        }
 
 
         [Test]
