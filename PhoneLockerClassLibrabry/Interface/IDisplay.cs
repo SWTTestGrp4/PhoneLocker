@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PhoneLocker
+﻿namespace PhoneLockerClassLibrary
 {
     public interface IDisplay
     {
