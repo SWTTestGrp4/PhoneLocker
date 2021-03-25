@@ -93,7 +93,7 @@ namespace UsbSimulator.Test
             _sourceDoor.OnDoorOpened(doorLockedEvent);
             Assert.That(_uutControl.DoorLocked, Is.EqualTo(locked));
         }
-        */
+        
         [TestCase(false)]
         public void StationControlDoorEvent_DifferentArguments_DoorBoolIsFalse(bool locked)
         {
@@ -101,7 +101,7 @@ namespace UsbSimulator.Test
             _sourceDoor.DoorLockedEvent += Raise.EventWith(new DoorLockedEventArgs() { DoorLocked = false });
             Assert.That(_uutControl.DoorLocked, Is.EqualTo(locked));
         }
-
+        */
     }
 
     public class FakeStationControl: IStationControl
