@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PhoneLockerClassLibrary;
-
-namespace PhoneLocker
+﻿namespace PhoneLockerClassLibrary
 {
     public interface IChargeControl
     {
