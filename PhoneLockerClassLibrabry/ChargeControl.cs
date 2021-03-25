@@ -8,9 +8,9 @@ namespace PhoneLockerClassLibrary
     public class ChargeControl : IChargeControl
     {
         public bool Connected { get; set; }
-        private IUsbCharger _charger;
-        private IDisplay _display;
         public double CurrentCurrent { get; set; }
+        public IUsbCharger _charger { get; set; }
+        public IDisplay _display { get; set; }
 
         public ChargeControl(IUsbCharger charger)
         {
@@ -53,6 +53,7 @@ namespace PhoneLockerClassLibrary
                 _display.DisplayCharge("Der er noget galt! Afbryder straks opladning");
             }
         }
+
     }
 }
 

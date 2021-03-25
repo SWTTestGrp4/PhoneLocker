@@ -11,5 +11,7 @@ namespace PhoneLocker
         public void StartCharge();
         public void StopCharge();
         public void HandleCurrentChangedEvent(object sender, CurrentChangedEventArgs e);
+        public IUsbCharger _charger { get; set; }
+        public IDisplay _display { get; set; }
     }
 }
