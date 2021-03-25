@@ -101,5 +101,21 @@ namespace UsbSimulator.Test
             }
         }
 
+
+        [TestCase(false),
+         TestCase(true)]
+        public void ConnectedGet_SimulateConnection_ReturnExpected(bool expected)
+        {
+            //Arrange
+            _uut._charger.Connected.Returns(expected);
+
+            //act
+            var result = _uut.Connected;
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        
     }
 }
