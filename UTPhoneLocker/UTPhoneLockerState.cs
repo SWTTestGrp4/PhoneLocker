@@ -13,7 +13,6 @@ namespace UsbSimulator.Test
         private IRFIDReader fakeRfidReader;
         private IChargeControl fakeChargeControl;
         private IDisplay fakeDisplay;
-        private PhoneLockerState UUT;
 
         [SetUp]
         public void Setup()
