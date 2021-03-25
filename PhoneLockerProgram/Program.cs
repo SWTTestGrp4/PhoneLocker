@@ -40,11 +40,15 @@ namespace PhoneLockerProgram
 
                     case 'O':
                     case 'o':
+                        state = PhoneLockerState.DoorOpen;
                         display.DisplayText("Døren er åben");
+                        display.DisplayText("Tilslut telefon");
+
                         break;
 
                     case 'C':
                     case 'c':
+                        state = PhoneLockerState.Available;
                         display.DisplayText("Døren er lukket");
                         display.DisplayText("Scan venligst RFID");
                         break;
@@ -65,7 +69,6 @@ namespace PhoneLockerProgram
                         {
                             chargeControl.Connected = false;
                             display.DisplayText("Telefon frakoblet");
-                            //chargeControl.StopCharge();
                         }
                         else
                         {
