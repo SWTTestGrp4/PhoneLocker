@@ -8,7 +8,6 @@ namespace UTPhoneLocker
     {
         private Door _uut;
         private DoorLockedEventArgs _receivedEventArgs;
-        private IStationControl _uutControl;
         private IDoor _sourceDoor;
         
 
