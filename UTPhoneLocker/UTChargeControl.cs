@@ -116,6 +116,17 @@ namespace UsbSimulator.Test
             Assert.That(result, Is.EqualTo(expected));
         }
 
-        
+        [TestCase(false)]
+        public void ConnectedSet_SimulateConnection_ReturnExpected(bool expected)
+        {
+            //Arrange
+
+            //act
+            _uut.Connected = expected;
+
+            //Assert
+            Assert.That(_uut._charger.Connected, Is.EqualTo(expected));
+        }
+
     }
 }
