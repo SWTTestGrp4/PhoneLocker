@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PhoneLocker
+namespace PhoneLockerClassLibrary
 {
     public class DoorLockedEventArgs : EventArgs
     {
