@@ -16,10 +16,15 @@ namespace UsbSimulator.Test
             _uut = new RFIDReader();
         }
 
-        [Test]
-        public void OnRFIDDetected_ReceiveID12_InvokeEventWithValue12()
+        [TestCase(-12),
+         TestCase(0),
+         TestCase(12)]
+        public void OnRFIDDetected_ReadRFIDIDid_EventRFIDValueEqualsid(int id)
         {
             _uut.RFIDDetectedEvent += (o, args) => { _receivedArgs = args; };
+            _uut.ReadRFID(id);
+            Assert.That(_receivedArgs.RFID, Is.EqualTo(id));
         }
+
     }
 }
