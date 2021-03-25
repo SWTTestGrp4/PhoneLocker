@@ -9,6 +9,8 @@ namespace PhoneLockerClassLibrary
 
         double CurrentValue { get; }
 
+        public void SimulateConnected(bool connected);
+
         event EventHandler<CurrentChangedEventArgs> CurrentEventArgs;
 
         

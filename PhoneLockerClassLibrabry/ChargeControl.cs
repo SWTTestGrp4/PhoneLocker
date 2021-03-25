@@ -2,7 +2,12 @@
 {
     public class ChargeControl : IChargeControl
     {
-        public bool Connected { get; set; }
+        public bool Connected
+        {
+            get { return _charger.Connected; }
+            set { _charger.SimulateConnected(value); }
+        }
+
         public double CurrentCurrent { get; set; }
         public IUsbCharger _charger { get; set; }
         public IDisplay _display { get; set; }
@@ -23,7 +28,6 @@
         {
             _charger.StopCharge();
         }
-
         public void HandleCurrentChangedEvent(object sender, CurrentChangedEventArgs e)
         {
             CurrentCurrent = e.CurrentCurrent;
