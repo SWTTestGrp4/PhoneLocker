@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using PhoneLockerClassLibrary;
 using NSubstitute;
-namespace UsbSimulator.Test
+namespace UTPhoneLocker
 {
     [TestFixture]
     public class UTDoor
