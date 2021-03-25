@@ -232,7 +232,5 @@ namespace UsbSimulator.Test
             Assert.That(lastValue, Is.EqualTo(1000.0));
         }
 
-
-
     }
 }
