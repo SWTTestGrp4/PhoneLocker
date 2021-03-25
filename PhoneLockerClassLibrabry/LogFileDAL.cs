@@ -15,7 +15,7 @@ namespace PhoneLockerClassLibrary
         private BinaryFormatter formatter;
         public LogFileDAL()
         {
-            fileName = "PhoneLockerLog";
+            fileName = "PhoneLockerLog.txt";
             destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
             outputFileStream = new FileStream(destPath, FileMode.OpenOrCreate, FileAccess.Write);
             formatter = new BinaryFormatter();
