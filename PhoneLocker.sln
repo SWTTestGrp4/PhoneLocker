@@ -12,6 +12,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneLockerProgram", "Phone
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneLockerClassLibrary", "PhoneLockerClassLibrabry\PhoneLockerClassLibrary.csproj", "{797A3A03-337B-4B5E-B3E6-099D4EBD7ABC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45EAC855-8007-4CCC-B403-F6089EDC1F25}"
+	ProjectSection(SolutionItems) = preProject
+		dotCoverCoverageConfigCore.xml = dotCoverCoverageConfigCore.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
