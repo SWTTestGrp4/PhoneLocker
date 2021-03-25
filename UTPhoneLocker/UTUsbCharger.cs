@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PhoneLockerClassLibrary;
 
-namespace UsbSimulator.Test
+namespace UTPhoneLocker
 {
     [TestFixture]
     public class UTUsbCharger
@@ -231,8 +231,6 @@ namespace UsbSimulator.Test
             // No new value received
             Assert.That(lastValue, Is.EqualTo(1000.0));
         }
-
-
 
     }
 }

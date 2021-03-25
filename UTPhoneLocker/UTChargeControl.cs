@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using PhoneLockerClassLibrary;
 
-namespace UsbSimulator.Test
+namespace UTPhoneLocker
 {
     [TestFixture]
     public class UTChargeControl
@@ -99,6 +99,33 @@ namespace UsbSimulator.Test
                 fakeCharger.Received(1).StopCharge();
                 _uut._display.Received(1).DisplayCharge("Der er noget galt! Afbryder straks opladning");
             }
+        }
+
+
+        [TestCase(false),
+         TestCase(true)]
+        public void ConnectedGet_SimulateConnection_ReturnExpected(bool expected)
+        {
+            //Arrange
+            _uut._charger.Connected.Returns(expected);
+
+            //act
+            var result = _uut.Connected;
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [TestCase(false)]
+        public void ConnectedSet_SimulateConnection_ReturnExpected(bool expected)
+        {
+            //Arrange
+
+            //act
+            _uut.Connected = expected;
+
+            //Assert
+            Assert.That(_uut._charger.Connected, Is.EqualTo(expected));
         }
 
     }

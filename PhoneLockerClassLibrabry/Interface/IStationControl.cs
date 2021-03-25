@@ -12,7 +12,7 @@
       public IChargeControl _charger { get; set; }
       public ILogging _logging { get; set; }
       public IDisplay _display { get; set; }
-      public IRFIDReader _rfidReader { get; set; }
+      public IRFIDReader RfidReader { set; }
  
 
     }

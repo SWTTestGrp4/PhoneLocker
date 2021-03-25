@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using PhoneLockerClassLibrary;
 
-namespace UsbSimulator.Test
-{
+namespace UTPhoneLocker
+{ 
     [TestFixture]
     public class UTRFIDReader
     {
