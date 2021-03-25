@@ -9,8 +9,6 @@ namespace PhoneLockerProgram
     class Program
     {
 
-
-
         static void Main(string[] args)
         {
             #region Instantiering af dependencies
