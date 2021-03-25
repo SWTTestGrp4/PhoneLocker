@@ -9,8 +9,8 @@ namespace PhoneLockerClassLibrary
     {
        public void Write(string message)
         {
-            try
-            {
+            //try
+            //{
                 using (var stream = new FileStream(
                     "PhoneLockerLog.txt", FileMode.Create, FileAccess.Write, FileShare.Write, 4096))
                 {
@@ -18,12 +18,12 @@ namespace PhoneLockerClassLibrary
                     stream.Write(bytes, 0, bytes.Length);
                 }
                 Console.WriteLine("Log has been saved to App Base Directory");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Woops serializing failed. Try again");
-                throw e;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("Woops serializing failed. Try again");
+            //    throw e;
+            //}
         }
     }
 }
