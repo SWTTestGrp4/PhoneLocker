@@ -2,6 +2,7 @@
 using PhoneLockerClassLibrary;
 
 namespace UTPhoneLocker
+{ 
     [TestFixture]
     public class UTRFIDReader
     {
