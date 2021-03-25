@@ -1,4 +1,7 @@
-﻿using NSubstitute;
+﻿using System;
+using System.IO;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
+using NSubstitute;
 using NUnit.Framework;
 using PhoneLockerClassLibrary;
 
@@ -7,112 +10,59 @@ namespace UsbSimulator.Test
     [TestFixture]
     public class UTDisplay
     {
-        private ILogging fakeLogging;
-        private IStationControl fakeStationControl;
-        private IDoor fakeDoor;
-        private IRFIDReader fakeRfidReader;
-        private IChargeControl fakeChargeControl;
-        private IDisplay UUT;
+        private IDisplay _uut;
 
         [SetUp]
         public void Setup()
         {
-            fakeLogging = Substitute.For<ILogging>();
-            fakeDoor = Substitute.For<IDoor>();
-            fakeRfidReader = Substitute.For<IRFIDReader>();
-            fakeChargeControl = Substitute.For<IChargeControl>();
-            UUT = Substitute.For<IDisplay>();
+            _uut = new Display();
         }
 
-        [TestCase("Tilslut telefon")]
-        public void DisplayText_WhenPhoneLockerIsAvailable_DisplayTextWritesConnectPhone(string message)
+        [TestCase("Tilslut telefon"),
+         TestCase("Telefon Ikke Tilstluttet"),
+         TestCase(""),
+         TestCase("Dette er en lang test for at finde ud af, om vores klasse kan udskrive lange," +
+                  "lange, og enddog ENORMT lange strenge. Vi er meget spændte på, om det går godt. Det er " +
+                  "godt nok en laaaaaang streng")]
+        public void DisplayText_InsertText_DisplayText(string message)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             //ACT
-            fakeStationControl.RfidDetected();
+            _uut.DisplayText(message);
+            //var currentConsoleOut = Console.Out.ToString();
 
             //ASSERT
-            UUT.Received(1).DisplayText(message);
-        }
 
-        [TestCase("Brug RFID til at låse skab op.")]
-        public void DisplayText_WhenPhoneLockerIsAvailableAndChargerConnectedRfidDetected_DisplayTextWritesUnlockMessage(string message)
-        {
-            //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            fakeChargeControl.Connected = true;
-            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
-
-            //ACT
-            fakeStationControl.RfidDetected();
-
-            //ASSERT
-            UUT.Received(1).DisplayText(message);
-        }
-
-        [TestCase("Din telefon er ikke ordentlig tilsluttet. Prøv igen.")]
-        public void DisplayText_WhenPhoneLockerIsAvailableAndChargerNotConnectedRfidDetected_DisplayTextWritesFailMessage(string message)
-        {
-            //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            fakeChargeControl.Connected = false;
-            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
-
-            //ACT
-            fakeStationControl.RfidDetected();
-
-            //ASSERT
-            UUT.Received(1).DisplayText(message);
-        }
-        [TestCase("Forkert RFID tag",3)]
-        public void DisplayText_WhenPhoneLockerIsLockedAndChargerConnectedRfidDetectedButIsWrong_DisplayErrorMessage(string message, int rfid)
-        {
-            //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            fakeChargeControl.Connected = true;
-            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
-            fakeStationControl.Rfid = rfid; //id fra event ved rfid scanning
-            fakeStationControl._oldId = 99; //gammelt id fra da man låste skabet
-
-            //ACT
-            fakeStationControl.RfidDetected();
-
-            //ASSERT
-            UUT.Received(1).DisplayText(message);
-        }
-
-        [TestCase("Skabet er nu optaget og opladning påbegyndes.")]
-        public void DisplayCharge_WhenPhoneLockerIsAvailableAndChargerConnectedRfidDetected_DisplayChargeStartedAndLockerOccupied(string message)
-        {
-            //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            fakeChargeControl.Connected = true;
-            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
-
-            //ACT
-            fakeStationControl.RfidDetected();
-
-            //ASSERT
-            UUT.Received(1).DisplayCharge(message);
+            Assert.That(output.ToString(), Is.EqualTo(message+"\r\n"));
+     
         }
 
 
-        [Test]
-        public void DisplayCharge_WhenPhoneLockerIsAvailableAndChargerNotConnectedRfidDetected_DisplayChargeDoesNotReceiveCall()
+        [TestCase("Tilslut telefon"),
+         TestCase("Telefon Ikke Tilstluttet"),
+         TestCase(""),
+         TestCase("Dette er en lang test for at finde ud af, om vores klasse kan udskrive lange," +
+                  "lange, og enddog ENORMT lange strenge. Vi er meget spændte på, om det går godt. Det er " +
+                  "godt nok en laaaaaang streng")]
+        public void DisplayCharge_InsertText_DisplayTextToTheRight(string message)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            fakeChargeControl.Connected = false;
-            fakeStationControl = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, UUT);
+
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             //ACT
-            fakeStationControl.RfidDetected();
+            _uut.DisplayCharge(message);
+            //var currentConsoleOut = Console.Out.ToString();
 
             //ASSERT
-            UUT.Received(0).DisplayCharge("");
+
+            Assert.That(output.ToString(), Is.EqualTo("\t\t\t"+message + "\r\n"));
+
         }
 
     }
