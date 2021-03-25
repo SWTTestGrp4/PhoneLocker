@@ -53,7 +53,6 @@ namespace PhoneLockerClassLibrary
             {
                 case PhoneLockerState.Available:
                     //DoorLocked = false;
-                    _display.DisplayText("Tilslut telefon");
 
                     if (_charger.Connected)
                     {

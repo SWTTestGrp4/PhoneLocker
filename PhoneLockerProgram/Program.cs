@@ -41,12 +41,16 @@ namespace PhoneLockerProgram
                     case 'O':
                     case 'o':
                         display.DisplayText("Døren er åben");
+                        state = PhoneLockerState.DoorOpen;
+                        display.DisplayText("Tilslut telefon");
+
                         break;
 
                     case 'C':
                     case 'c':
                         display.DisplayText("Døren er lukket");
                         display.DisplayText("Scan venligst RFID");
+                        state = PhoneLockerState.Available;
                         break;
 
                     case 'R':
