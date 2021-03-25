@@ -121,7 +121,15 @@ namespace UTPhoneLocker
         public IChargeControl _charger { get; set; }
         public ILogging _logging { get; set; }
         public IDisplay _display { get; set; }
-        public IRFIDReader _rfidReader { get; set; }
+        private IRFIDReader _rfidReader;
+
+        public IRFIDReader RfidReader
+        {
+            set
+            {
+                _rfidReader = value;
+            }
+        }
 
         public FakeStationControl(IDoor door)
         {
