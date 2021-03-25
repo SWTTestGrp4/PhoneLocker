@@ -12,7 +12,7 @@ namespace PhoneLocker
     public class StationControl: IStationControl
     {
         #region instantiering af objekter
-        private int _oldId;
+        public int _oldId { get; set; }
         public bool DoorLocked { get; set; }
         public int Rfid { get; set; }
 

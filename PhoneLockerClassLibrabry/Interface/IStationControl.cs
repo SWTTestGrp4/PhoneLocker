@@ -8,7 +8,8 @@ namespace PhoneLocker
     public interface IStationControl
     {
       public bool DoorLocked { get; set; }
-      public int Rfid { get; set; }
+      public int _oldId { get; set; }
+    public int Rfid { get; set; }
 
       public void RfidDetected();
 
