@@ -15,7 +15,7 @@ namespace UsbSimulator.Test
         [SetUp]
         public void Setup()
         {
-            path = "C:/Users/jespe/source/repos/PhoneLocker/UTPhoneLocker/bin/Debug/netcoreapp3.1/PhoneLockerLog.txt";
+            path = "PhoneLockerLog.txt";
             File.Create(path).Close();
             _uut = new LogFileDAL();
 
