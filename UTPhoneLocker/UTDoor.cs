@@ -25,7 +25,7 @@ namespace UsbSimulator.Test
                     _receivedEventArgs = args;
                 };
 
-            _sourceDoor = Substitute.For<IDoor>();
+            _sourceDoor = new Door();
             _uutControl = new FakeStationControl(_sourceDoor);
 
 
@@ -83,15 +83,17 @@ namespace UsbSimulator.Test
 
         }
         */
-
+        /*
         [TestCase(true)]
         public void StationControlDoorEvent_DifferentArguments_DoorBoolIsTrue(bool locked)
         {
+            DoorLockedEventArgs doorLockedEvent = new DoorLockedEventArgs() {DoorLocked = true};
             //This class tests the stationsControl by using Nsubstitute. It injects the source into the receiver to make sure that the event gets triggered on the right place
-            _sourceDoor.DoorLockedEvent += Raise.EventWith(new DoorLockedEventArgs() {DoorLocked = true});
+            _sourceDoor.DoorLockedEvent += Raise.EventWith(doorLockedEvent);
+            _sourceDoor.OnDoorOpened(doorLockedEvent);
             Assert.That(_uutControl.DoorLocked, Is.EqualTo(locked));
         }
-
+        */
         [TestCase(false)]
         public void StationControlDoorEvent_DifferentArguments_DoorBoolIsFalse(bool locked)
         {
