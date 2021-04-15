@@ -5,34 +5,26 @@ namespace PhoneLockerClassLibrary
     public class StationControl: IStationControl
     {
         #region instantiering af objekter
-        public int _oldId { get; set; }
+        public int oldId { get; set; }
         public bool DoorLocked { get; set; }
         public int Rfid { get; set; }
 
-        public IDoor _door { get; set; }
-        public PhoneLockerState _state { get; set; }
-        public IChargeControl _charger { get; set; }
-        public ILogging _logging { get; set; }
-        public IDisplay _display { get; set; }
+        public IDoor Door { get; set; }
+        public PhoneLockerState State { get; set; }
+        public IChargeControl Charger { get; set; }
+        public ILogging Logging { get; set; }
+        public IDisplay Display { get; set; }
         private IRFIDReader _rfidReader;
 
-        //public IRFIDReader RfidReader
-        //{
-        //    set
-        //    {
-        //        _rfidReader = value;
-        //    }
-        //}
 
         #endregion
 
-        public StationControl(PhoneLockerState state, IDoor door, IRFIDReader rfidReader, IChargeControl charger, ILogging logging, IDisplay display)
+        public StationControl(IDoor door, IRFIDReader rfidReader, IChargeControl charger, ILogging logging, IDisplay display)
         {
-            _state = state;
-            _charger = charger;
-            _logging = logging;
-            _display = display;
-            _door = door;
+            Charger = charger;
+            Logging = logging;
+            Display = display;
+            Door = door;
             _rfidReader = rfidReader;
             door.DoorLockedEvent += HandleDoorLockedEvent;
             rfidReader.RFIDDetectedEvent += HandleRfidDetectedEvent;
@@ -58,24 +50,24 @@ namespace PhoneLockerClassLibrary
         {
             int id;
             id = Rfid;
-            switch (_state)
+            switch (State)
             {
                 case PhoneLockerState.Available:
                     //DoorLocked = false;
 
-                    if (_charger.Connected)
+                    if (Charger.Connected)
                     {
-                        _door.LockDoor();
-                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: " + id);
-                        _charger.StartCharge();
-                        _oldId = id;
-                        _display.DisplayText("Brug RFID til at låse skab op.");
-                        _display.DisplayCharge("Skabet er nu optaget og opladning påbegyndes.");
-                        _state = PhoneLockerState.Locked;
+                        Door.LockDoor();
+                        Logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: " + id);
+                        Charger.StartCharge();
+                        oldId = id;
+                        Display.DisplayText("Brug RFID til at låse skab op.");
+                        Display.DisplayCharge("Skabet er nu optaget og opladning påbegyndes.");
+                        State = PhoneLockerState.Locked;
                     }
                     else
                     {
-                        _display.DisplayText("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+                        Display.DisplayText("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
                     }
 
                     break;
@@ -86,19 +78,19 @@ namespace PhoneLockerClassLibrary
 
                 case PhoneLockerState.Locked:
                     // Check for correct ID
-                    if (id == _oldId)
+                    if (id == oldId)
                     {
-                        _charger.StopCharge();
-                        _door.UnlockDoor();
-                        _logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: " + id);
+                        Charger.StopCharge();
+                        Door.UnlockDoor();
+                        Logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: " + id);
 
-                        _display.DisplayText("Tag din telefon ud af skabet og luk døren");
-                        _display.DisplayText("Skabet er nu ledigt");
-                        _state = PhoneLockerState.Available;
+                        Display.DisplayText("Tag din telefon ud af skabet og luk døren");
+                        Display.DisplayText("Skabet er nu ledigt");
+                        State = PhoneLockerState.Available;
                     }
                     else
                     {
-                        _display.DisplayText("Forkert RFID tag");
+                        Display.DisplayText("Forkert RFID tag");
                     }
 
                     break;

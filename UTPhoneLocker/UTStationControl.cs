@@ -23,19 +23,20 @@ namespace UTPhoneLocker
             fakeRfidReader = Substitute.For<IRFIDReader>();
             fakeChargeControl = Substitute.For<IChargeControl>();
             fakeDisplay = Substitute.For<IDisplay>();
-            fakeRfidReader = Substitute.For<RFIDReader>();
+            UUT = new StationControl(fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
         }
 
         [TestCase("Brug RFID til at låse skab op.")]
         public void DisplayText_WhenPhoneLockerIsAvailableAndChargerConnectedRfidDetected_DisplayTextWritesUnlockMessage(string message)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
+            UUT.State  = PhoneLockerState.Available;
             fakeChargeControl.Connected = true;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs(){RFID = 0});
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs(){RFID = 0});
 
             //ASSERT
             fakeDisplay.Received(1).DisplayText(message);
@@ -45,12 +46,12 @@ namespace UTPhoneLocker
         public void DisplayText_WhenPhoneLockerIsAvailableAndChargerNotConnectedRfidDetected_DisplayTextWritesFailMessage(string message)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
+            UUT.State  = PhoneLockerState.Available;
             fakeChargeControl.Connected = false;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+             
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeDisplay.Received(1).DisplayText(message);
@@ -59,14 +60,14 @@ namespace UTPhoneLocker
         public void DisplayText_WhenPhoneLockerIsLockedAndChargerConnectedRfidDetectedButIsWrong_DisplayErrorMessage(string message, int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
+            UUT.State  = PhoneLockerState.Locked;
             fakeChargeControl.Connected = true;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+             
             UUT.Rfid = rfid; //id fra event ved rfid scanning
-            UUT._oldId = 99; //gammelt id fra da man låste skabet
+            UUT.oldId = 99; //gammelt id fra da man låste skabet
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
 
             //ASSERT
             fakeDisplay.Received(1).DisplayText(message);
@@ -76,12 +77,12 @@ namespace UTPhoneLocker
         public void DisplayCharge_WhenPhoneLockerIsAvailableAndChargerConnectedRfidDetected_DisplayChargeStartedAndLockerOccupied(string message)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
+            UUT.State  = PhoneLockerState.Available;
             fakeChargeControl.Connected = true;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+             
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeDisplay.Received(1).DisplayCharge(message);
@@ -92,12 +93,12 @@ namespace UTPhoneLocker
         public void DisplayCharge_WhenPhoneLockerIsAvailableAndChargerNotConnectedRfidDetected_DisplayChargeDoesNotReceiveCall()
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
+            UUT.State  = PhoneLockerState.Available;
             fakeChargeControl.Connected = false;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+             
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeDisplay.Received(0).DisplayCharge("");
@@ -107,12 +108,12 @@ namespace UTPhoneLocker
         public void StartCharge_WhenPhoneLockerIsAvailableChargerConnectedRfidDetected_CallReceived()
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Available;
+             
             fakeChargeControl.Connected = true;
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeChargeControl.Received(1).StartCharge();
@@ -122,28 +123,29 @@ namespace UTPhoneLocker
         public void StopCharge_WhenPhoneLockerIsLockedRfidDetected_RFIDIsCorrect_CallReceived(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Locked;
+             
             UUT.Rfid = rfid; //id fra event
-            UUT._oldId = rfid; //gammelt id fra da man låste skabet
+            UUT.oldId = rfid; //gammelt id fra da man låste skabet
 
             //ACT
-            fakeRfidReader.ReadRFID(rfid);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
 
             //ASSERT
             fakeChargeControl.Received(1).StopCharge();
         }
+
         [TestCase(1)]
         public void StopCharge_WhenPhoneLockerIsLockedRfidDetected_RFIDIsWrong_CallNotReceived(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Locked;
+             
             UUT.Rfid = rfid; //forkert id fra event
-            UUT._oldId = 99; //korrekt id fra vedkommende der låste skabet
+            UUT.oldId = 99; //korrekt id fra vedkommende der låste skabet
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeChargeControl.DidNotReceive().StopCharge();
@@ -154,14 +156,14 @@ namespace UTPhoneLocker
         public void Write_WhenPhoneLockerIsAvailableChargerConnectedRfidDetected_TimeAndRFIDCorrectLogged(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
+            UUT.State  = PhoneLockerState.Available;
             fakeChargeControl.Connected = true;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+             
             string message2write = DateTime.Now.ToString("HH:mm:ss") + ": Skab laast med RFID: " + rfid;
             UUT.Rfid = rfid;
 
             //ACT
-            fakeRfidReader.ReadRFID(rfid);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
 
             //ASSERT
             fakeLogging.Received(1).Write(message2write);
@@ -170,12 +172,12 @@ namespace UTPhoneLocker
         public void LockDoor_WhenPhoneLockerIsAvailableChargerConnectedRfidDetected_CallReceived()
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Available;
+             
             fakeChargeControl.Connected = true;
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeDoor.Received(1).LockDoor();
@@ -184,12 +186,12 @@ namespace UTPhoneLocker
         public void LockDoor_WhenPhoneLockerIsAvailableAndChargerNotConnectedRfidDetected_CallNotReceived()
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Available;
+             
             fakeChargeControl.Connected = false;
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             //ASSERT
             fakeDoor.DidNotReceive().LockDoor();
@@ -200,16 +202,16 @@ namespace UTPhoneLocker
         public void Write_WhenPhoneLockerIsLockedChargerConnectedRfidDetected_TimeAndRFIDCorrectLogged(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
+            UUT.State  = PhoneLockerState.Locked;
             fakeChargeControl.Connected = true;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+             
             UUT.Rfid = rfid; //id fra event
-            UUT._oldId = rfid; //gammelt id fra da man låste skabet
+            UUT.oldId = rfid; //gammelt id fra da man låste skabet
             string message2write = DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: " + rfid;
 
 
             //ACT
-            fakeRfidReader.ReadRFID(rfid);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
 
             //ASSERT
             fakeLogging.Received(1).Write(message2write);
@@ -219,13 +221,13 @@ namespace UTPhoneLocker
         public void UnlockDoor_RFIDIsCorrect_WhenPhoneLockerIsLockedChargerConnectedRfidDetected_CallReceived(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Locked;
+             
             UUT.Rfid = rfid; //id fra event
-            UUT._oldId = rfid; //gammelt id fra da man låste skabet
+            UUT.oldId = rfid; //gammelt id fra da man låste skabet
 
             //ACT
-            fakeRfidReader.ReadRFID(rfid);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
             //ASSERT
             fakeDoor.Received(1).UnlockDoor();
         }
@@ -234,13 +236,13 @@ namespace UTPhoneLocker
         public void UnlockDoor_WhenRFIDIsNotCorrect_PhoneLockerIsLockedChargerConnectedRfidDetected_CallNotReceived(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Locked;
+             
             UUT.Rfid = rfid; //id fra event
-            UUT._oldId = 99; //gammelt id fra da man låste skabet
+            UUT.oldId = 99; //gammelt id fra da man låste skabet
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
             //ASSERT
             fakeDoor.DidNotReceive().UnlockDoor();
         }
@@ -249,35 +251,35 @@ namespace UTPhoneLocker
         public void PhoneLockerStateIsLocked_AfterRfidDetectedAndPhoneConnectedChargingStarted()
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Available;
+             
             fakeChargeControl.Connected = true;
 
             //ACT
-            fakeRfidReader.ReadRFID(0);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = 0 });
 
             PhoneLockerState desiredState = PhoneLockerState.Locked;
             //ASSERT
-            Assert.That(UUT._state, Is.EqualTo(desiredState));
+            Assert.That(UUT.State, Is.EqualTo(desiredState));
         }
 
         [TestCase(1)]
-        public void PhoneLockerStateIsAvailable_AfterRfidDetected_IDMatchesOldID(int rfid)
+        public void RfidDetected_PresentsRfidWithMatchingId_StateChangeToAvailable(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Locked;
+             
             fakeChargeControl.Connected = true;
-            UUT.Rfid = rfid; //id fra event
-            UUT._oldId = rfid; //gammelt id fra da man låste skabet
+            UUT.oldId = rfid; //gammelt id fra da man låste skabet
 
             //ACT
-            fakeRfidReader.ReadRFID(rfid);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
 
             PhoneLockerState desiredState = PhoneLockerState.Available;
             //ASSERT
-            Assert.That(UUT._state, Is.EqualTo(desiredState));
+            Assert.That(UUT.State, Is.EqualTo(desiredState));
         }
+
         [TestCase(-10),
          TestCase(0),
          TestCase(1),
@@ -285,11 +287,10 @@ namespace UTPhoneLocker
         public void HandleRfidDetectedEvent_AfterRfidDetected_IDMatchesOldID(int rfid)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Locked;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
+            UUT.State  = PhoneLockerState.Locked;
 
             //ACT
-            fakeRfidReader.ReadRFID(rfid);
+            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
 
             //ASSERT
             Assert.That(UUT.Rfid, Is.EqualTo(rfid));
@@ -300,9 +301,8 @@ namespace UTPhoneLocker
         public void HandleDoorLockedEvent_DoorOpenAndClosedInserted_DoorStatusInUUTIsSet(bool door)
         {
             //ARRANGE
-            PhoneLockerState teststate = PhoneLockerState.Available;
-            UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
-
+            UUT.State  = PhoneLockerState.Available;
+            
             //ACT
             fakeDoor.DoorLockedEvent += Raise.EventWith(new DoorLockedEventArgs() { DoorLocked = door });
 

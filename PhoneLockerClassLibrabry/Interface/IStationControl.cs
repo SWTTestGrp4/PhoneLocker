@@ -2,18 +2,14 @@
 {
     public interface IStationControl
     {
-      public bool DoorLocked { get; set; }
-      public int _oldId { get; set; }
-    public int Rfid { get; set; }
-
-      //public void RfidDetected();
-      public IDoor _door { get; set; }
-      public PhoneLockerState _state { get; set; }
-      public IChargeControl _charger { get; set; }
-      public ILogging _logging { get; set; }
-      public IDisplay _display { get; set; }
-      //public IRFIDReader RfidReader { set; }
- 
+      bool DoorLocked { get; set; }
+      public int oldId { get; set; }
+      public int Rfid { get; set; }
+      public IDoor Door { get; set; }
+      public PhoneLockerState State { get; set; }
+      public IChargeControl Charger { get; set; }
+      public ILogging Logging { get; set; }
+      public IDisplay Display { get; set; }
 
     }
 

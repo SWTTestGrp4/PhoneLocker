@@ -15,10 +15,10 @@ namespace PhoneLockerProgram
             IDoor door = new Door();
             ILogging logging = new LogFileDAL();
             IRFIDReader rfidReader = new RFIDReader();
-            PhoneLockerState state = PhoneLockerState.Available;
+            
             IChargeControl chargeControl = new ChargeControl(usbCharger);
             
-            IStationControl stationControl = new StationControl(state, door, rfidReader, chargeControl, logging, display);
+            IStationControl stationControl = new StationControl(door, rfidReader, chargeControl, logging, display);
             #endregion
 
 
@@ -40,7 +40,7 @@ namespace PhoneLockerProgram
 
                     case 'O':
                     case 'o':
-                        state = PhoneLockerState.DoorOpen;
+                        stationControl.State = PhoneLockerState.DoorOpen;
                         display.DisplayText("Døren er åben");
                         display.DisplayText("Tilslut telefon");
 
@@ -48,7 +48,7 @@ namespace PhoneLockerProgram
 
                     case 'C':
                     case 'c':
-                        state = PhoneLockerState.Available;
+                        stationControl.State = PhoneLockerState.Available;
                         display.DisplayText("Døren er lukket");
                         display.DisplayText("Scan venligst RFID");
                         break;
