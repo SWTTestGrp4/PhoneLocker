@@ -289,7 +289,6 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
-            //fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
             fakeRfidReader.ReadRFID(rfid);
 
             //ASSERT

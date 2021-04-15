@@ -16,13 +16,13 @@ namespace PhoneLockerClassLibrary
         public IDisplay _display { get; set; }
         private IRFIDReader _rfidReader;
 
-        public IRFIDReader RfidReader
-        {
-            set
-            {
-                _rfidReader = value;
-            }
-        }
+        //public IRFIDReader RfidReader
+        //{
+        //    set
+        //    {
+        //        _rfidReader = value;
+        //    }
+        //}
 
         #endregion
 
