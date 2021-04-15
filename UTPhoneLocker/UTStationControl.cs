@@ -23,6 +23,7 @@ namespace UTPhoneLocker
             fakeRfidReader = Substitute.For<IRFIDReader>();
             fakeChargeControl = Substitute.For<IChargeControl>();
             fakeDisplay = Substitute.For<IDisplay>();
+            fakeRfidReader = Substitute.For<RFIDReader>();
         }
 
         [TestCase("Brug RFID til at låse skab op.")]
@@ -34,6 +35,7 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
+            fakeRfidReader.ReadRFID(0);
             UUT.RfidDetected();
 
             //ASSERT
