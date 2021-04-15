@@ -36,7 +36,6 @@ namespace UTPhoneLocker
 
             //ACT
             fakeRfidReader.ReadRFID(0);
-            UUT.RfidDetected();
 
             //ASSERT
             fakeDisplay.Received(1).DisplayText(message);
@@ -51,7 +50,7 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeDisplay.Received(1).DisplayText(message);
@@ -67,7 +66,7 @@ namespace UTPhoneLocker
             UUT._oldId = 99; //gammelt id fra da man låste skabet
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeDisplay.Received(1).DisplayText(message);
@@ -82,7 +81,7 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeDisplay.Received(1).DisplayCharge(message);
@@ -98,7 +97,7 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeDisplay.Received(0).DisplayCharge("");
@@ -113,7 +112,7 @@ namespace UTPhoneLocker
             fakeChargeControl.Connected = true;
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeChargeControl.Received(1).StartCharge();
@@ -129,7 +128,7 @@ namespace UTPhoneLocker
             UUT._oldId = rfid; //gammelt id fra da man låste skabet
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(rfid);
 
             //ASSERT
             fakeChargeControl.Received(1).StopCharge();
@@ -144,7 +143,7 @@ namespace UTPhoneLocker
             UUT._oldId = 99; //korrekt id fra vedkommende der låste skabet
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeChargeControl.DidNotReceive().StopCharge();
@@ -162,7 +161,7 @@ namespace UTPhoneLocker
             UUT.Rfid = rfid;
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(rfid);
 
             //ASSERT
             fakeLogging.Received(1).Write(message2write);
@@ -176,7 +175,7 @@ namespace UTPhoneLocker
             fakeChargeControl.Connected = true;
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeDoor.Received(1).LockDoor();
@@ -190,7 +189,7 @@ namespace UTPhoneLocker
             fakeChargeControl.Connected = false;
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             //ASSERT
             fakeDoor.DidNotReceive().LockDoor();
@@ -210,7 +209,7 @@ namespace UTPhoneLocker
 
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(rfid);
 
             //ASSERT
             fakeLogging.Received(1).Write(message2write);
@@ -226,8 +225,7 @@ namespace UTPhoneLocker
             UUT._oldId = rfid; //gammelt id fra da man låste skabet
 
             //ACT
-            UUT.RfidDetected();
-
+            fakeRfidReader.ReadRFID(rfid);
             //ASSERT
             fakeDoor.Received(1).UnlockDoor();
         }
@@ -242,8 +240,7 @@ namespace UTPhoneLocker
             UUT._oldId = 99; //gammelt id fra da man låste skabet
 
             //ACT
-            UUT.RfidDetected();
-
+            fakeRfidReader.ReadRFID(0);
             //ASSERT
             fakeDoor.DidNotReceive().UnlockDoor();
         }
@@ -257,7 +254,7 @@ namespace UTPhoneLocker
             fakeChargeControl.Connected = true;
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(0);
 
             PhoneLockerState desiredState = PhoneLockerState.Locked;
             //ASSERT
@@ -275,7 +272,7 @@ namespace UTPhoneLocker
             UUT._oldId = rfid; //gammelt id fra da man låste skabet
 
             //ACT
-            UUT.RfidDetected();
+            fakeRfidReader.ReadRFID(rfid);
 
             PhoneLockerState desiredState = PhoneLockerState.Available;
             //ASSERT
@@ -292,7 +289,8 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
-            fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
+            //fakeRfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDDetectedEventArgs() { RFID = rfid });
+            fakeRfidReader.ReadRFID(rfid);
 
             //ASSERT
             Assert.That(UUT.Rfid, Is.EqualTo(rfid));
@@ -307,7 +305,7 @@ namespace UTPhoneLocker
             UUT = new StationControl(teststate, fakeDoor, fakeRfidReader, fakeChargeControl, fakeLogging, fakeDisplay);
 
             //ACT
-            fakeDoor.DoorLockedEvent += Raise.EventWith(new DoorLockedEventArgs() { DoorLocked = door  });
+            fakeDoor.DoorLockedEvent += Raise.EventWith(new DoorLockedEventArgs() { DoorLocked = door });
 
             //ASSERT
             Assert.That(UUT.DoorLocked, Is.EqualTo(door));

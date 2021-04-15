@@ -6,7 +6,7 @@
       public int _oldId { get; set; }
     public int Rfid { get; set; }
 
-      public void RfidDetected();
+      //public void RfidDetected();
       public IDoor _door { get; set; }
       public PhoneLockerState _state { get; set; }
       public IChargeControl _charger { get; set; }

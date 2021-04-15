@@ -60,7 +60,6 @@ namespace PhoneLockerProgram
 
                         int id = Convert.ToInt32(idString);
                         rfidReader.ReadRFID(id);
-                        stationControl.RfidDetected();
 
                         break;
                     case 'P':

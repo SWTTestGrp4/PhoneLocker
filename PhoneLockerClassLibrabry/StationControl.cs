@@ -50,10 +50,11 @@ namespace PhoneLockerClassLibrary
         private void HandleRfidDetectedEvent(object sender,RFIDDetectedEventArgs e)
         {
             Rfid = e.RFID;
+            RfidDetected();
         }
 
 
-        public void RfidDetected()
+        private void RfidDetected()
         {
             int id;
             id = Rfid;
