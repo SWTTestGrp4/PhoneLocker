@@ -15,9 +15,9 @@ namespace PhoneLockerProgram
             IDoor door = new Door();
             ILogging logging = new LogFileDAL();
             IRFIDReader rfidReader = new RFIDReader();
-            
+
             IChargeControl chargeControl = new ChargeControl(usbCharger);
-            
+
             IStationControl stationControl = new StationControl(door, rfidReader, chargeControl, logging, display);
             #endregion
 
@@ -40,14 +40,25 @@ namespace PhoneLockerProgram
 
                     case 'O':
                     case 'o':
-                        stationControl.State = PhoneLockerState.DoorOpen;
-                        display.DisplayText("Døren er åben");
-                        display.DisplayText("Tilslut telefon");
-
+                        if (stationControl.State == PhoneLockerState.DoorOpen)
+                        {
+                            display.DisplayText("Ladedøren er allerede åben. Frakobl eller tilslut mobil.");
+                            break;
+                        }
+                        else
+                        {
+                            stationControl.State = PhoneLockerState.DoorOpen;
+                            display.DisplayText("Døren er åben");
+                            display.DisplayText("Tilslut telefon");
+                        }
                         break;
 
                     case 'C':
                     case 'c':
+                        if (stationControl.State != PhoneLockerState.DoorOpen)
+                        {
+                            break;
+                        }
                         stationControl.State = PhoneLockerState.Available;
                         display.DisplayText("Døren er lukket");
                         display.DisplayText("Scan venligst RFID");
@@ -55,6 +66,7 @@ namespace PhoneLockerProgram
 
                     case 'R':
                     case 'r':
+                        Console.Clear();
                         display.DisplayText("Indtast RFID id: ");
                         string idString = System.Console.ReadLine();
 
@@ -64,6 +76,11 @@ namespace PhoneLockerProgram
                         break;
                     case 'P':
                     case 'p':
+                        if (stationControl.State != PhoneLockerState.DoorOpen)
+                        {
+                            display.DisplayText("Døren er lukket. Åben før der kan tilsluttes.");
+                            break;
+                        }
                         if (chargeControl.Connected)
                         {
                             chargeControl.Connected = false;

@@ -82,6 +82,7 @@ namespace PhoneLockerClassLibrary
                     {
                         Charger.StopCharge();
                         Door.UnlockDoor();
+                        Console.Clear();
                         Logging.Write(DateTime.Now.ToString("HH:mm:ss") + ": Skab laast op med RFID: " + id);
 
                         Display.DisplayText("Tag din telefon ud af skabet og luk døren");
